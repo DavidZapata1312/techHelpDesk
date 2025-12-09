@@ -1,34 +1,89 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TicketService } from './ticket.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from "@nestjs/common";
+import { TicketService } from "./ticket.service";
+import { CreateTicketDto } from "./dto/create-ticket.dto";
+import { UpdateTicketDto } from "./dto/update-ticket.dto";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { Roles } from "../auth/decorators/roles.decorator";
+import { CurrentUser } from "../auth/decorators/current-user.decorator";
+import { UserRole } from "../users/entities/user.entity";
+import { User } from "../users/entities/user.entity";
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody } from "@nestjs/swagger";
 
-@Controller('ticket')
+@ApiTags("Tickets")
+@ApiBearerAuth("Authorization")
+@Controller("ticket")
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
+  // Cliente crea ticket
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.CLIENT)
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketService.create(createTicketDto);
+  @ApiOperation({ summary: "Create a ticket" })
+  @ApiBody({ type: CreateTicketDto, description: "Ticket creation payload" })
+  create(@Body() createTicketDto: CreateTicketDto, @CurrentUser() user: User) {
+    return this.ticketService.create(createTicketDto, user);
   }
 
+  // Admin ve todos los tickets
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  findAll(@CurrentUser() user: User) {
+    return this.ticketService.findAll(user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketService.findOne(+id);
+  // Cliente ve solo su ticket, Admin puede ver cualquiera
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.CLIENT, UserRole.ADMIN)
+  @Get(":id")
+  findOne(@Param("id") id: string, @CurrentUser() user: User) {
+    return this.ticketService.findOneFiltered(+id, user);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketService.update(+id, updateTicketDto);
+  // Técnico actualiza estado de ticket asignado
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.TECHNICIAN)
+  @Patch(":id/status")
+  @ApiOperation({ summary: "Update ticket status (technician)" })
+  @ApiBody({ type: UpdateTicketDto, description: "Payload to update ticket status" })
+  updateStatus(
+    @Param("id") id: string,
+    @Body() updateTicketDto: UpdateTicketDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.ticketService.updateStatus(+id, updateTicketDto, user);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketService.remove(+id);
+  // Admin puede actualizar cualquier ticket
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @Patch(":id")
+  @ApiOperation({ summary: "Update ticket (admin)" })
+  @ApiBody({ type: UpdateTicketDto, description: "Ticket update payload" })
+  update(
+    @Param("id") id: string,
+    @Body() updateTicketDto: UpdateTicketDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.ticketService.update(+id, updateTicketDto, user);
+  }
+
+  // Solo Admin puede eliminar tickets
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @Delete(":id")
+  remove(@Param("id") id: string, @CurrentUser() user: User) {
+    return this.ticketService.remove(+id, user);
   }
 }

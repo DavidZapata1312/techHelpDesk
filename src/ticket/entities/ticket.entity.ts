@@ -37,7 +37,7 @@ export class Ticket extends BaseEntity {
   description: string;
 
   @Column({ type: "enum", enum: TicketStatus, default: TicketStatus.OPEN })
-  status: TicketStatus;
+  status: TicketStatus | undefined;
 
   @Column({
     type: "enum",

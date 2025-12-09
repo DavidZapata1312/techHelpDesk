@@ -1,4 +1,24 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTicketDto } from './create-ticket.dto';
+import { IsString, IsOptional, IsEnum, IsNumber } from "class-validator";
+import { TicketStatus, TicketPriority } from "../entities/ticket.entity";
 
-export class UpdateTicketDto extends PartialType(CreateTicketDto) {}
+export class UpdateTicketDto {
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsNumber()
+  categoryId?: Number;
+
+  @IsOptional()
+  @IsEnum(TicketStatus)
+  status?: TicketStatus;
+
+  @IsOptional()
+  @IsEnum(TicketPriority)
+  priority?: TicketPriority;
+}

@@ -5,94 +5,224 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  
+# TechHelpDesk - API (NestJS)
 
-## Description
+A ticket management API built with NestJS for managing users, clients, technicians, categories and tickets.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Created by: David Zapata
 
-## Project setup
+Clan: Ubuntu
 
-```bash
-$ pnpm install
-```
+---
 
-## Compile and run the project
+## Contents
 
-```bash
-# development
-$ pnpm run start
 
-# watch mode
-$ pnpm run start:dev
+- Instructions to run the project
+- Swagger URL and example endpoints
+- Example `.env` file
 
-# production mode
-$ pnpm run start:prod
-```
+---
 
-## Run tests
+## Requirements
+
+- Node.js >= 18
+- pnpm (recommended) or npm
+- Docker (optional)
+
+---
+
+## Installation
+
+From the project root:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# using npm
+npm install
+# or using pnpm (recommended when pnpm-lock.yaml is present)
+pnpm install
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Run in development
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# start in development (watch)
+npm run start:dev
+# or with pnpm
+pnpm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Default port: 3000 (configurable via `PORT`).
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Build and run (production)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+pnpm run build
+pnpm run start:prod
+```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Docker (optional)
 
-## Stay in touch
+Build and run the Docker image:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+docker build -t techhelpdesk .
+docker run -p 3000:3000 --env-file .env --name techhelpdesk techhelpdesk
+# or with docker-compose if present
+docker-compose up --build
+```
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Swagger (API documentation)
+
+The Swagger UI is served at:
+
+```
+http://localhost:3000/api
+```
+
+(If your project config uses a different path, adjust accordingly.)
+
+Example endpoints and payloads (ready to paste into Swagger "Try it out"):
+
+1) POST /auth/login
+Request (JSON):
+
+```json
+{
+  "username": "admin",
+  "password": "P@ssw0rd"
+}
+```
+
+Response example:
+
+```json
+{
+  "access_token": "<JWT_TOKEN>",
+  "user": {
+    "id": 1,
+    "username": "admin",
+    "roles": ["ADMIN"]
+  }
+}
+```
+
+2) POST /users  (ADMIN only)
+Request (JSON):
+
+```json
+{
+  "username": "davidz",
+  "email": "david@example.com",
+  "password": "P@ssw0rd",
+  "roles": ["CLIENT"]
+}
+```
+
+Response example (201 Created):
+
+```json
+{
+  "id": 2,
+  "username": "davidz",
+  "email": "david@example.com",
+  "roles": ["CLIENT"]
+}
+```
+
+3) POST /tickets  (CLIENT)
+Request (JSON):
+
+```json
+{
+  "title": "Computer won't start",
+  "description": "The workstation does not power on since yesterday",
+  "clientId": 3,
+  "categoryId": 1
+}
+```
+
+Response example (201 Created):
+
+```json
+{
+  "id": 45,
+  "title": "Computer won't start",
+  "status": "OPEN",
+  "clientId": 3,
+  "categoryId": 1,
+  "createdAt": "2025-12-09T10:00:00.000Z"
+}
+```
+
+4) PATCH /tickets/:id/status  (TECHNICIAN or ADMIN depending on assignment)
+Request (JSON):
+
+```json
+{
+  "newStatus": "IN_PROGRESS"
+}
+```
+
+Response example (200 OK):
+
+```json
+{
+  "id": 45,
+  "status": "IN_PROGRESS",
+  "updatedAt": "2025-12-09T12:00:00.000Z"
+}
+```
+
+---
+
+## Example `.env` (template)
+
+Create a `.env` file in the project root with these variables (do not commit real secrets):
+
+```
+# App
+PORT=3000
+NODE_ENV=development
+
+# JWT
+JWT_SECRET=YourVerySecretKey
+JWT_EXPIRES_IN=3600s
+
+# Database (Postgres)
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=techhelpdesk
+
+# Optional TypeORM settings
+TYPEORM_SYNCHRONIZE=false
+TYPEORM_LOGGING=false
+```
+
+
+
+## Authentication and roles
+
+- Authentication: JWT
+- Guards: `JwtAuthGuard`, `RolesGuard`
+- Decorators: `@Roles()`, `@CurrentUser()`
+- Roles: `ADMIN`, `TECHNICIAN`, `CLIENT`
+
+Routes should be protected according to the role matrix described in the project.
+
+---
+
+## Author
+
+Created by David Zapata — Clan Ubuntu
