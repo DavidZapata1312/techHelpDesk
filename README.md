@@ -226,3 +226,4 @@ Routes should be protected according to the role matrix described in the project
 ## Author
 
 Created by David Zapata — Clan Ubuntu
+pnpm ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/migrations/InitialMigration -d src/database/config.ts 
